@@ -1,4 +1,4 @@
-# My Web Server
+# my-web-server
 
 HTTP/1.1対応を目指している、Webサーバです。
 
