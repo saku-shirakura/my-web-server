@@ -12,7 +12,7 @@ Socket::~Socket() {
 Socket::Socket(int port) : _sin(sockaddr_in()) {
     _socket = socket(PF_INET, SOCK_STREAM, 0);
     if (_socket == -1) {
-        std::cout << "Socket error." << std::endl;
+        std::cout << "[fatal] Socket error." << std::endl;
         exit(1);
     }
     bzero(&_sin, sizeof _sin);
@@ -20,17 +20,17 @@ Socket::Socket(int port) : _sin(sockaddr_in()) {
     _sin.sin_port = htons(port);
     _sin.sin_addr.s_addr = INADDR_ANY;
     if (bind(_socket, (sockaddr *) &_sin, sizeof _sin) == -1) {
-        std::cout << "Socket bind error\nerrno: " << errno << std::endl;
+        std::cout << "[fatal] Socket bind error\nerrno: " << errno << std::endl;
         exit(1);
     }
 }
 
-int Socket::get_socket() const {
+int Socket::getSocket() const {
     return _socket;
 }
 
 void Socket::listen() const {
-    if (::listen(this->get_socket(), 5) == -1) {
+    if (::listen(this->getSocket(), 5) == -1) {
         std::cout << "listen error\nerrno: " << errno << std::endl;
         exit(1);
     }
@@ -38,12 +38,12 @@ void Socket::listen() const {
 
 std::string Socket::accept() {
     std::string request;
-    _last_response_socket = -1;
-    _last_response_socket = ::accept(this->get_socket(), nullptr, nullptr);
+    closeAccepted();
+    _last_response_socket = ::accept(this->getSocket(), nullptr, nullptr);
     if (_last_response_socket == -1) {
         std::cout << "socket error\nerrno: " << errno << std::endl;
     } else {
-        char xx[] = "HTTP/1.1 404 Not Found.\r\nserver: sa9ra\r\nconnection: close\r\n\r\n";
+
         int read_len;
         if (ioctl(_last_response_socket, FIONREAD, &read_len) < 0) {
             std::cout << "read error\nerrno: " << errno << std::endl;
@@ -59,7 +59,6 @@ std::string Socket::accept() {
                 if (reaming_len <= 0)
                     break;
             }
-            write(_last_response_socket, &xx, 61);
         }
     }
     if (_last_response_socket != -1)
@@ -68,3 +67,13 @@ std::string Socket::accept() {
 }
 
 Socket::Socket() : Socket(3000) {}
+
+int Socket::getAcceptedSocket() const {
+    return _last_response_socket;
+}
+
+void Socket::closeAccepted() {
+    if (_last_response_socket != -1)
+        close(_last_response_socket);
+    _last_response_socket = -1;
+}

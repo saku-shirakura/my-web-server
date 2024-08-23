@@ -7,4 +7,6 @@ add_executable(my_web_server src/main.cpp
         src/Server/Socket.cpp
         src/Server/Socket.h
         src/Server/Server.cpp
-        src/Server/Server.h)
+        src/Server/Server.h
+        src/Logger.cpp
+        src/Logger.h)

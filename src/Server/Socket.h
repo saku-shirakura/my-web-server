@@ -20,11 +20,15 @@ public:
 
     ~Socket();
 
-    [[nodiscard]] int get_socket() const;
+    [[nodiscard]] int getSocket() const;
+
+    [[nodiscard]] int getAcceptedSocket() const;
 
     void listen() const;
 
     std::string accept();
+
+    void closeAccepted();
 
 private:
 

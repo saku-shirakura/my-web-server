@@ -8,5 +8,7 @@
     sock.listen();
     while (true) {
         std::cout << sock.accept() << std::endl;
+        char xx[] = "HTTP/1.1 404 Not Found.\r\nserver: sa9ra\r\nconnection: close\r\n\r\n";
+        write(sock.getAcceptedSocket(), &xx, 61);
     }
 }
