@@ -14,16 +14,20 @@
 #include <ctime>
 #include <chrono>
 
-enum class Level {
-    NOTE = 0,
-    INFO,
-    WARNING,
-    ERROR,
-    FATAL
+class Logger {
+public:
+
+    enum class Level {
+        NOTE = 0,
+        INFO,
+        WARNING,
+        ERROR,
+        FATAL
+    };
+
+    static std::string levelToString(Level lv);
+
+    [[maybe_unused]] static void log(Level lv, const std::string &msg);
 };
-
-std::string levelToString(Level lv);
-
-[[maybe_unused]] void logging(Level lv, const std::string &msg);
 
 #endif //MY_WEB_SERVER_LOGGER_H

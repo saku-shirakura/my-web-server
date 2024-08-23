@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-std::string levelToString(Level lv) {
+std::string Logger::levelToString(Level lv) {
     switch (lv) {
         case Level::NOTE:
             return "NOTE";
@@ -17,7 +17,7 @@ std::string levelToString(Level lv) {
     }
 }
 
-void logging(Level lv, const std::string &msg) {
+void Logger::log(Level lv, const std::string &msg) {
     std::chrono::zoned_time zoned_time{std::chrono::system_clock::now()};
 
     auto s_info = zoned_time.get_info();
